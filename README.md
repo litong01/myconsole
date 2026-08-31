@@ -27,25 +27,42 @@ https://github.com/litong01/myconsole/releases/latest
 2. Copy it to the tablet (USB, cloud, FKB Remote Admin file upload, etc.).
 3. Unzip so the folder is `/sdcard/myconsole/` — you should see `inject/`, `icons/`, `fkb/`, and `README.md` inside it.
 
-### 2. FKB — Universal Launcher
+### 2. Install the theme by importing a settings file
+
+Android usually refuses to open an `.html` file as text, so don't try to copy the
+inject code by hand on the tablet. Import it instead:
+
+**FKB → Settings → Other Settings → Import Settings** → pick
+
+```
+/sdcard/myconsole/fkb/myconsole-settings.json
+```
+
+Only the keys in that file are applied, so your existing shortcuts, PIN, and
+other settings are left alone. It sets:
+
+| Key | Effect |
+|-----|--------|
+| `launcherInjectCode` | The whole theme (CSS + clock + centering) |
+| `showAppLauncherOnStart` | Universal Launcher becomes the home screen |
+| `showActionBar`, `showStatusBar`, `showNavigationBar`, `showProgressBar` | Off, for a clean console |
+| `enableBackButton` | Back returns from a device page to the launcher |
+
+Then reload with `fully://launcher` (or restart FKB) and you should see the dark
+centered console.
+
+**Manual fallback:** if you would rather paste it, use
+`inject/launcher-inject.txt` — same content, but the `.txt` extension opens in
+any Android text editor. Paste it into **Settings → Universal Launcher → Inject
+HTML Code in Launcher**.
+
+### 3. FKB — device options (optional)
 
 | Setting | Value |
 |--------|--------|
-| **Show Launcher on Start** | ON |
-| **Launcher Background Color** | `#0b0b0c` |
-| **Launcher Text Color** | `#e8eaed` |
-| **Launcher Page Scaling** | `100` (adjust if tiles feel too small on your tablet) |
-| **Inject HTML Code in Launcher** | Paste entire contents of `inject/launcher-inject.html` |
-
-### 3. FKB — recommended appearance (optional)
-
-| Setting | Value |
-|--------|--------|
-| **Show Action Bar** | OFF |
-| **Show Status Bar** | OFF |
-| **Show Navigation Bar** | OFF |
 | **Keep Screen On** | ON (Device Management) |
 | **Launch on Boot** | ON |
+| **Screen Orientation** | however the tablet is mounted |
 
 See `fkb/recommended-settings.md` for the full checklist.
 
@@ -100,14 +117,21 @@ Open `preview/index.html` in a browser to see the layout with sample tiles (no F
 
 ```
 myconsole/
-  inject/launcher-inject.html   ← paste into FKB
+  fkb/myconsole-settings.json   ← import this in FKB (installs the theme)
+  inject/launcher-inject.html   ← source of the theme
+  inject/launcher-inject.txt    ← same, for manual paste on Android
   icons/*.svg                   ← icons to point FKB at
   icons/png/*.png               ← same icons as 256px PNG
   icons/gallery.html            ← browse the set, copy paths
   preview/index.html            ← desktop preview of the console
   fkb/recommended-settings.md
   tools/make-png.sh             ← re-render PNGs after editing an SVG
+  tools/make-settings.py        ← rebuild the importable settings file
+  tools/package.sh              ← build the tablet zip
 ```
+
+`fkb/myconsole-settings.json` and `inject/launcher-inject.txt` are generated at
+package time, so they only exist in the zip — never edited by hand.
 
 ## Troubleshooting
 
