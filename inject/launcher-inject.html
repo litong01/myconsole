@@ -94,9 +94,15 @@
     max-width: 100%;
   }
 
-  /* Tiles: FKB uses div.app for apps and div.bookmark for URLs */
-  #myconsole-grid div.app,
-  #myconsole-grid div.bookmark {
+  /*
+    Tiles: FKB uses div.app for apps and div.bookmark for URLs. These rules are
+    deliberately not scoped to #myconsole-grid, so the tiles still look right
+    (and labels stay visible) even if the script never moves them into the grid.
+    FKB's own height:6em + overflow-y:hidden would otherwise clip the label.
+  */
+  div.app,
+  div.bookmark,
+  .mc-tile {
     float: none !important;
     width: var(--mc-tile) !important;
     height: auto !important;
@@ -108,13 +114,15 @@
     transition: transform 180ms ease;
   }
 
-  #myconsole-grid div.app:active,
-  #myconsole-grid div.bookmark:active {
+  div.app:active,
+  div.bookmark:active,
+  .mc-tile:active {
     transform: scale(0.96);
   }
 
-  #myconsole-grid div.app > a,
-  #myconsole-grid div.bookmark > a {
+  div.app > a,
+  div.bookmark > a,
+  .mc-tile > a {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -123,8 +131,9 @@
   }
 
   /* Round icon well */
-  #myconsole-grid div.appIcon,
-  #myconsole-grid div.bookmarkIcon {
+  div.appIcon,
+  div.bookmarkIcon,
+  .mc-icon {
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -142,8 +151,9 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
   }
 
-  #myconsole-grid div.app > a:hover div.appIcon,
-  #myconsole-grid div.bookmark > a:hover div.bookmarkIcon {
+  div.app > a:hover div.appIcon,
+  div.bookmark > a:hover div.bookmarkIcon,
+  .mc-tile > a:hover .mc-icon {
     border-color: var(--mc-ring-hover) !important;
     box-shadow:
       0 22px 48px rgba(0, 0, 0, 0.42),
@@ -152,8 +162,9 @@
   }
 
   /* FKB sizes icons at 4em; fill the well instead */
-  #myconsole-grid div.appIcon img,
-  #myconsole-grid div.bookmarkIcon img {
+  div.appIcon img,
+  div.bookmarkIcon img,
+  .mc-icon img {
     display: block !important;
     width: 100% !important;
     height: 100% !important;
@@ -162,9 +173,14 @@
     border: 0 !important;
   }
 
-  /* Labels: FKB defaults to 0.7em bold black, which is invisible here */
-  #myconsole-grid div.appName,
-  #myconsole-grid div.bookmarkName {
+  /*
+    Labels: FKB defaults to 0.7em bold black, which is invisible here.
+    .mc-label is applied by the script from the item's structure, so this also
+    covers FKB builds that name these elements differently.
+  */
+  div.appName,
+  div.bookmarkName,
+  .mc-label {
     display: block !important;
     max-width: calc(var(--mc-tile) + 36px) !important;
     margin: 14px auto 0 !important;
@@ -210,6 +226,41 @@
    */
 
   var ITEM_SELECTOR = "div.app, div.bookmark";
+
+  /**
+   * Launcher items, by class when FKB uses the documented markup and by shape
+   * otherwise: a direct child of body holding a link with an image in it.
+   */
+  function findItems() {
+    var items = document.querySelectorAll(ITEM_SELECTOR);
+    if (items.length) return items;
+
+    var found = [];
+    var kids = document.body.children;
+    for (var i = 0; i < kids.length; i++) {
+      var node = kids[i];
+      if (node.id && node.id.indexOf("myconsole") === 0) continue;
+      if (node.querySelector && node.querySelector("a img")) {
+        found.push(node);
+      }
+    }
+    return found;
+  }
+
+  /** Tag icon and label so styling does not depend on FKB's class names */
+  function tagParts(item) {
+    item.classList.add("mc-tile");
+    var link = item.querySelector("a") || item;
+    var parts = link.children;
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (part.querySelector && part.querySelector("img")) {
+        part.classList.add("mc-icon");
+      } else if ((part.textContent || "").trim()) {
+        part.classList.add("mc-label");
+      }
+    }
+  }
 
   function pad(n) {
     return n < 10 ? "0" + n : String(n);
@@ -267,8 +318,9 @@
     var grid = buildChrome();
     if (!grid) return;
 
-    var items = document.querySelectorAll(ITEM_SELECTOR);
+    var items = findItems();
     for (var i = 0; i < items.length; i++) {
+      tagParts(items[i]);
       if (items[i].parentNode !== grid) {
         grid.appendChild(items[i]);
       }
