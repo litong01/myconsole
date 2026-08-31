@@ -301,6 +301,20 @@
     return found;
   }
 
+  /* One stamp per launcher load, so each icon is still fetched only once */
+  var STAMP = String(Date.now());
+
+  /**
+   * Edited icon files keep the same path, so the WebView happily serves the
+   * copy it already has. A per-load query string makes it fetch from disk
+   * again. Skipped for data: URLs, where there is no file to re-read.
+   */
+  function refreshIcon(img) {
+    var src = img.getAttribute("src") || "";
+    if (!src || /^data:/i.test(src) || src.indexOf("mc=") !== -1) return;
+    img.setAttribute("src", src + (src.indexOf("?") === -1 ? "?" : "&") + "mc=" + STAMP);
+  }
+
   /** Tag icon and label so styling does not depend on FKB's class names */
   function tagParts(item) {
     item.classList.add("mc-tile");
@@ -310,6 +324,10 @@
       var part = parts[i];
       if (part.querySelector && part.querySelector("img")) {
         part.classList.add("mc-icon");
+        var images = part.getElementsByTagName("img");
+        for (var j = 0; j < images.length; j++) {
+          refreshIcon(images[j]);
+        }
       } else if ((part.textContent || "").trim()) {
         part.classList.add("mc-label");
       }
