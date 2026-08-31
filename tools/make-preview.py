@@ -5,8 +5,12 @@ The preview embeds Fully Kiosk's own launcher stylesheet and markup (copied from
 https://www.fully-kiosk.com/samples/universal-launcher.html) so the desktop
 render shows what the tablet will show.
 
-    python3 tools/make-preview.py            # normal preview
-    python3 tools/make-preview.py --no-js    # CSS-only, to check the fallback
+The theme is added the same way FKB adds it - as HTML written into <head> at
+runtime, which means a plain <script> tag in it does not execute. Keeping the
+preview faithful to that is the point; the theme has to cope with it.
+
+    python3 tools/make-preview.py            # as FKB injects it
+    python3 tools/make-preview.py --no-js    # CSS only, to check the fallback
 """
 
 import pathlib
@@ -98,11 +102,25 @@ def main() -> int:
     note = (
         "Desktop preview, CSS only (script removed) — labels must still be readable."
         if no_js
-        else "Desktop preview — mirrors Fully Kiosk's real launcher markup and stylesheet."
+        else "Desktop preview — theme injected exactly as Fully Kiosk injects it."
+    )
+
+    # A <template> keeps the theme inert until the injector writes it into <head>
+    # as markup, matching how FKB applies it.
+    injected = (
+        '<template id="mc-theme">\n'
+        + theme
+        + "\n</template>\n"
+        '<script>\n'
+        '  document.head.insertAdjacentHTML(\n'
+        '    "beforeend",\n'
+        '    document.getElementById("mc-theme").innerHTML\n'
+        '  );\n'
+        "</script>\n"
     )
 
     out = ROOT / ("preview/index-nojs.html" if no_js else "preview/index.html")
-    out.write_text(FKB_HEAD + theme + "\n" + body(note), encoding="utf-8")
+    out.write_text(FKB_HEAD + injected + body(note), encoding="utf-8")
     print(f"Wrote {out}")
     return 0
 

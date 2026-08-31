@@ -37,6 +37,7 @@
     }
   </style>
 
+<template id="mc-theme">
 <style id="myconsole-styles">
   :root {
     --mc-bg: #0b0b0c;
@@ -59,6 +60,7 @@
     width: 100% !important;
     height: 100% !important;
     overflow: hidden !important;
+    box-sizing: border-box !important;
     text-align: center !important;
     background:
       radial-gradient(1200px 700px at 50% 38%, #1a1d24 0%, transparent 62%),
@@ -68,6 +70,20 @@
     font-family: var(--mc-font) !important;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /*
+    Body itself centers the launcher items, so the grid is centered even with no
+    script at all. When the script does run it moves the items into
+    #myconsole-stage, which centers them under the clock instead.
+  */
+  body {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    align-content: center !important;
+    justify-content: center !important;
+    padding: 40px 24px !important;
   }
 
   #myconsole-header {
@@ -111,7 +127,6 @@
     grid-template-columns: repeat(var(--mc-cols), var(--mc-tile));
     justify-content: center;
     align-content: center;
-    gap: var(--mc-gap);
     max-width: 100%;
   }
 
@@ -127,7 +142,8 @@
     float: none !important;
     width: var(--mc-tile) !important;
     height: auto !important;
-    margin: 0 !important;
+    /* Margins rather than grid gap, so spacing also holds in the no-script path */
+    margin: calc(var(--mc-gap) / 2) !important;
     padding: 0 !important;
     border: 0 !important;
     overflow: visible !important;
@@ -244,7 +260,12 @@
    *
    * FKB injects this into <head>, so everything is built from script once the
    * launcher items exist in <body>.
+   *
+   * May be started twice: directly, if the injected script tag executes, and
+   * again by the loader below when it does not.
    */
+  if (window.myconsoleStarted) return;
+  window.myconsoleStarted = true;
 
   var ITEM_SELECTOR = "div.app, div.bookmark";
 
@@ -373,6 +394,22 @@
 })();
 </script>
 
+<!--
+  Fully Kiosk inserts this block with innerHTML, and a <script> tag added that
+  way never executes - which left the items unmoved and their labels clipped.
+  An inline handler on an inserted element does still fire, so this broken image
+  re-adds the script above as a real element, which does execute.
+-->
+<img id="myconsole-loader" src="data:," alt="" style="display:none"
+  onerror="(function(){var s=document.getElementById('myconsole-script');if(!s||window.myconsoleStarted)return;var n=document.createElement('script');n.text=s.textContent;document.head.appendChild(n);})()">
+
+</template>
+<script>
+  document.head.insertAdjacentHTML(
+    "beforeend",
+    document.getElementById("mc-theme").innerHTML
+  );
+</script>
 </head>
 <body>
   <!-- Same shape FKB generates for each shortcut -->
@@ -413,6 +450,6 @@
     </a>
   </div>
 
-  <p class="preview-banner">Desktop preview — mirrors Fully Kiosk's real launcher markup and stylesheet.</p>
+  <p class="preview-banner">Desktop preview — theme injected exactly as Fully Kiosk injects it.</p>
 </body>
 </html>
