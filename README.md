@@ -17,11 +17,15 @@ A zip-ready package that restyles the **Fully Kiosk Browser (FKB) Universal Laun
 
 ## Quick setup
 
-### 1. Copy to tablet
+### 1. Get the zip onto the tablet
 
-1. Zip this folder on your computer.
-2. Copy the zip to your tablet (USB, cloud, FKB Remote Admin file upload, etc.).
-3. Unzip to internal storage, e.g. `/sdcard/myconsole/`.
+Each push to `main` publishes **myconsole.zip** at:
+
+https://github.com/litong01/myconsole/releases/latest
+
+1. Download **myconsole.zip** from that page (or from the **Actions** run artifact).
+2. Copy it to the tablet (USB, cloud, FKB Remote Admin file upload, etc.).
+3. Unzip so the folder is `/sdcard/myconsole/` — you should see `inject/`, `icons/`, `fkb/`, and `README.md` inside it.
 
 ### 2. FKB — Universal Launcher
 
