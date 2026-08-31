@@ -1,26 +1,34 @@
 <!--
-  myconsole — Fully Kiosk Universal Launcher inject
+  myconsole — Fully Kiosk Universal Launcher theme
 
-  Paste this entire file into:
-  Settings → Universal Launcher → Inject HTML Code in Launcher
+  Paste into: Settings → Universal Launcher → Inject HTML Code in Launcher
+  (or import fkb/myconsole-settings.json, which sets this for you)
 
-  Keeps FKB's native add/remove flow (Select Items to Show).
+  FKB injects this into <head> of the launcher page, whose markup is:
+
+    <div class="app"|"bookmark" id="...">
+      <a href="...">
+        <div class="appIcon"|"bookmarkIcon"><img src="..."></div>
+        <div class="appName"|"bookmarkName">Label</div>
+      </a>
+    </div>
+
+  Names and icons come from FKB; this only restyles and centers them.
 -->
 
 <style id="myconsole-styles">
-  @import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300;6..144,400;6..144,500&display=swap");
-
   :root {
     --mc-bg: #0b0b0c;
     --mc-bg-soft: #141416;
     --mc-text: #e8eaed;
-    --mc-text-dim: rgba(232, 234, 237, 0.62);
+    --mc-text-dim: rgba(232, 234, 237, 0.72);
     --mc-ring: rgba(255, 255, 255, 0.09);
     --mc-ring-hover: rgba(255, 255, 255, 0.16);
     --mc-glow: rgba(138, 180, 248, 0.18);
     --mc-tile: 132px;
     --mc-gap: 28px;
-    --mc-font: "Google Sans Flex", "Google Sans", Roboto, system-ui, sans-serif;
+    --mc-cols: 3;
+    --mc-font: "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
   }
 
   html,
@@ -30,6 +38,7 @@
     width: 100% !important;
     height: 100% !important;
     overflow: hidden !important;
+    text-align: center !important;
     background:
       radial-gradient(1200px 700px at 50% 38%, #1a1d24 0%, transparent 62%),
       radial-gradient(900px 500px at 50% 100%, rgba(138, 180, 248, 0.06) 0%, transparent 55%),
@@ -38,15 +47,6 @@
     font-family: var(--mc-font) !important;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  /* Hide default launcher chrome if present */
-  body > h1,
-  body > h2,
-  body > hr,
-  #title,
-  .title {
-    display: none !important;
   }
 
   #myconsole-header {
@@ -60,7 +60,7 @@
     text-align: center;
   }
 
-  #myconsole-header .clock {
+  #myconsole-header .mc-clock {
     font-size: clamp(2.4rem, 6vw, 3.4rem);
     font-weight: 300;
     letter-spacing: -0.03em;
@@ -68,7 +68,7 @@
     color: var(--mc-text);
   }
 
-  #myconsole-header .date {
+  #myconsole-header .mc-date {
     margin-top: 8px;
     font-size: clamp(0.95rem, 2.2vw, 1.1rem);
     font-weight: 400;
@@ -85,69 +85,53 @@
     box-sizing: border-box;
   }
 
-  /* FKB Universal Launcher list container */
-  #list,
-  body > table,
-  .list {
-    display: grid !important;
-    place-content: center !important;
-    place-items: center !important;
-    justify-content: center !important;
-    align-content: center !important;
-    gap: var(--mc-gap) !important;
-    width: min(920px, 100%) !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    grid-template-columns: repeat(var(--mc-cols, 3), minmax(0, var(--mc-tile))) !important;
+  #myconsole-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--mc-cols), var(--mc-tile));
+    justify-content: center;
+    align-content: center;
+    gap: var(--mc-gap);
+    max-width: 100%;
   }
 
-  /* Each shortcut tile */
-  #list .item,
-  #list > tbody > tr,
-  .list .item,
-  a.item,
-  div.item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
+  /* Tiles: FKB uses div.app for apps and div.bookmark for URLs */
+  #myconsole-grid div.app,
+  #myconsole-grid div.bookmark {
+    float: none !important;
     width: var(--mc-tile) !important;
-    min-width: var(--mc-tile) !important;
-    max-width: var(--mc-tile) !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
-    text-decoration: none !important;
-    color: inherit !important;
-    background: transparent !important;
     border: 0 !important;
-    box-shadow: none !important;
-    float: none !important;
-    vertical-align: top !important;
-    transform: translateZ(0);
-    transition: transform 180ms ease, filter 180ms ease;
+    overflow: visible !important;
+    background: transparent !important;
+    transition: transform 180ms ease;
   }
 
-  #list .item:active,
-  .list .item:active {
+  #myconsole-grid div.app:active,
+  #myconsole-grid div.bookmark:active {
     transform: scale(0.96);
   }
 
-  /* Circular icon well — Nest-like soft disc */
-  #list .item .icon,
-  #list .item img,
-  .list .item img,
-  #list .item .img,
-  #list > tbody > tr img {
-    display: block !important;
+  #myconsole-grid div.app > a,
+  #myconsole-grid div.bookmark > a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: var(--mc-text-dim) !important;
+  }
+
+  /* Round icon well */
+  #myconsole-grid div.appIcon,
+  #myconsole-grid div.bookmarkIcon {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     width: var(--mc-tile) !important;
     height: var(--mc-tile) !important;
-    margin: 0 auto 14px !important;
-    padding: 28px !important;
+    padding: 26px !important;
     box-sizing: border-box !important;
-    object-fit: contain !important;
     border-radius: 50% !important;
     background:
       radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 55%, rgba(0, 0, 0, 0.15) 100%),
@@ -156,11 +140,10 @@
     box-shadow:
       0 18px 40px rgba(0, 0, 0, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-    filter: saturate(0.92) brightness(1.05);
   }
 
-  #list .item:hover img,
-  .list .item:hover img {
+  #myconsole-grid div.app > a:hover div.appIcon,
+  #myconsole-grid div.bookmark > a:hover div.bookmarkIcon {
     border-color: var(--mc-ring-hover) !important;
     box-shadow:
       0 22px 48px rgba(0, 0, 0, 0.42),
@@ -168,40 +151,37 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   }
 
-  /* Labels */
-  #list .item .label,
-  #list .item span,
-  #list .item font,
-  .list .item .label,
-  #list > tbody > tr td:last-child,
-  #list .item div:not(.icon):not(.img) {
+  /* FKB sizes icons at 4em; fill the well instead */
+  #myconsole-grid div.appIcon img,
+  #myconsole-grid div.bookmarkIcon img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  /* Labels: FKB defaults to 0.7em bold black, which is invisible here */
+  #myconsole-grid div.appName,
+  #myconsole-grid div.bookmarkName {
     display: block !important;
     max-width: calc(var(--mc-tile) + 36px) !important;
-    margin: 0 auto !important;
+    margin: 14px auto 0 !important;
     padding: 0 4px !important;
-    text-align: center !important;
     font-family: var(--mc-font) !important;
     font-size: 0.92rem !important;
     font-weight: 400 !important;
     line-height: 1.25 !important;
     letter-spacing: 0.01em;
+    text-align: center !important;
     color: var(--mc-text-dim) !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     background: transparent !important;
-    border: 0 !important;
   }
 
-  /* Flatten table-based legacy launcher markup */
-  #list > tbody,
-  #list > tbody > tr > td {
-    display: contents !important;
-    border: 0 !important;
-    background: transparent !important;
-  }
-
-  /* Portrait tablets: slightly smaller tiles */
   @media (orientation: portrait) {
     :root {
       --mc-tile: 118px;
@@ -217,13 +197,6 @@
   }
 </style>
 
-<div id="myconsole-header" aria-hidden="true">
-  <div class="clock" id="myconsole-clock">--:--</div>
-  <div class="date" id="myconsole-date">&nbsp;</div>
-</div>
-
-<div id="myconsole-stage"></div>
-
 <script id="myconsole-script">
 (function () {
   "use strict";
@@ -231,25 +204,49 @@
   /**
    * Layout only. Names and icons come from Fully Kiosk
    * (Universal Launcher -> Select Items to Show) and are left untouched.
+   *
+   * FKB injects this into <head>, so everything is built from script once the
+   * launcher items exist in <body>.
    */
 
-  function $(sel, root) {
-    return (root || document).querySelector(sel);
-  }
-
-  function $all(sel, root) {
-    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
-  }
+  var ITEM_SELECTOR = "div.app, div.bookmark";
 
   function pad(n) {
     return n < 10 ? "0" + n : String(n);
   }
 
+  function el(tag, id, className) {
+    var node = document.createElement(tag);
+    if (id) node.id = id;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function buildChrome() {
+    var header = document.getElementById("myconsole-header");
+    if (!header) {
+      header = el("div", "myconsole-header");
+      header.setAttribute("aria-hidden", "true");
+      header.appendChild(el("div", null, "mc-clock")).textContent = "--:--";
+      header.appendChild(el("div", null, "mc-date"));
+      document.body.appendChild(header);
+    }
+
+    var stage = document.getElementById("myconsole-stage");
+    if (!stage) {
+      stage = el("div", "myconsole-stage");
+      stage.appendChild(el("div", "myconsole-grid"));
+      document.body.appendChild(stage);
+    }
+
+    return document.getElementById("myconsole-grid");
+  }
+
   function updateClock() {
-    var now = new Date();
-    var clock = $("#myconsole-clock");
-    var date = $("#myconsole-date");
+    var clock = document.querySelector("#myconsole-header .mc-clock");
+    var date = document.querySelector("#myconsole-header .mc-date");
     if (!clock || !date) return;
+    var now = new Date();
     clock.textContent = pad(now.getHours()) + ":" + pad(now.getMinutes());
     date.textContent = now.toLocaleDateString(undefined, {
       weekday: "long",
@@ -258,11 +255,7 @@
     });
   }
 
-  function findList() {
-    return $("#list") || $(".list") || $("table");
-  }
-
-  /** Columns chosen so the tiles stay visually balanced and centered */
+  /** Columns chosen so tiles stay balanced around the center */
   function columnCount(n) {
     if (n <= 1) return 1;
     if (n <= 4) return 2;
@@ -270,44 +263,32 @@
     return 4;
   }
 
-  function mountList() {
-    var list = findList();
-    var stage = $("#myconsole-stage");
-    if (!list || !stage) return false;
-    if (list.parentNode !== stage) {
-      stage.appendChild(list);
-    }
-    return true;
-  }
+  function layout() {
+    var grid = buildChrome();
+    if (!grid) return;
 
-  function applyLayout() {
-    var items = $all("#list .item, .list .item, #list > tbody > tr");
-    if (!items.length) {
-      items = $all("#list a, .list a");
+    var items = document.querySelectorAll(ITEM_SELECTOR);
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].parentNode !== grid) {
+        grid.appendChild(items[i]);
+      }
     }
-    if (!items.length) return;
-    document.documentElement.style.setProperty(
-      "--mc-cols",
-      String(columnCount(items.length))
-    );
+
+    var count = grid.children.length;
+    if (count) {
+      document.documentElement.style.setProperty("--mc-cols", String(columnCount(count)));
+    }
   }
 
   function boot() {
+    layout();
     updateClock();
     window.setInterval(updateClock, 10000);
 
-    if (!mountList()) {
-      window.setTimeout(boot, 120);
-      return;
-    }
-    applyLayout();
-
-    var list = findList();
-    if (list && window.MutationObserver) {
+    if (window.MutationObserver) {
       new MutationObserver(function () {
-        mountList();
-        applyLayout();
-      }).observe(list, { childList: true, subtree: true });
+        layout();
+      }).observe(document.body, { childList: true });
     }
   }
 
