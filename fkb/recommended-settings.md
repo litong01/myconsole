@@ -7,8 +7,9 @@ Use this as a checklist after unzipping **myconsole** and pasting `inject/launch
 **Other Settings → Import Settings** → pick `fkb/myconsole-settings.json`.
 
 That one import covers everything below in this section: the inject code, the
-launcher as home screen, the hidden toolbars, and the back button. Only the keys
-in the file change, so existing shortcuts and PINs are untouched.
+launcher as home screen, the action bar with back/forward/home, the hidden
+system bars, and the back button. Only the keys in the file change, so existing
+shortcuts and PINs are untouched.
 
 Prefer to paste by hand? Use `inject/launcher-inject.txt` (Android will not open
 the `.html` as text) into **Universal Launcher → Inject HTML Code in Launcher**,
@@ -18,11 +19,20 @@ then set the rest yourself:
 |---------|-------------|
 | Show Launcher on Start | **ON** |
 | Launcher Page Scaling | `100` (try `110` on large wall tablets) |
-| Show Action Bar | OFF |
+| Show Action Bar | **ON** (gives back / forward / home) |
+| Show Back Button | ON |
+| Show Forward Button | ON |
+| Show Home Button | ON |
+| Show Refresh Button | OFF |
+| Action Bar Title | `Raleigh Chinese Christian Church` |
+| Action Bar Background / Text Color | `#0b0b0c` / white, to match the theme |
 | Show Status Bar | OFF |
 | Show Navigation Bar | OFF |
 | Show Progress Bar | OFF |
 | Enable Back Button | ON |
+
+Home on the action bar loads the Start URL, and because **Show Launcher on Start**
+is on, that is the console itself.
 
 Launcher background and label colors come from the injected CSS, so the
 **Launcher Background Color** and **Launcher Text Color** settings do not matter.
@@ -81,4 +91,5 @@ Open `icons/gallery.html` in FKB or a browser to see them all with their paths.
 0. After importing, reload `fully://launcher` or restart FKB.
 1. Open FKB → centered round tiles plus the clock.
 2. Add a test URL with a name and icon in **Select Items to Show** → the tile appears with exactly that name and icon, no re-zipping.
-3. Tap the tile → the site opens; Home (if enabled) → back to the launcher.
+3. Tap the tile → the site opens; the action bar's back, forward, and home
+   buttons navigate, and home returns to the console.

@@ -14,11 +14,28 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 INJECT = ROOT / "inject" / "launcher-inject.html"
 
 
+ACTION_BAR_TITLE = "Raleigh Chinese Christian Church"
+
+# Android packs colors as signed 32-bit ARGB ints. This is the theme's #0b0b0c,
+# so the bar blends into the launcher background instead of FKB's default blue.
+ACTION_BAR_BG = -16053492
+ACTION_BAR_FG = -1
+
+
 def build(inject_code: str) -> dict:
     return {
         "launcherInjectCode": inject_code,
         "showAppLauncherOnStart": True,
-        "showActionBar": False,
+        # Action bar carries back/forward/home; the system bars stay hidden so
+        # the launcher keeps the full screen.
+        "showActionBar": True,
+        "showBackButton": True,
+        "showForwardButton": True,
+        "showHomeButton": True,
+        "showRefreshButton": False,
+        "actionBarTitle": ACTION_BAR_TITLE,
+        "actionBarBgColor": ACTION_BAR_BG,
+        "actionBarFgColor": ACTION_BAR_FG,
         "showStatusBar": False,
         "showNavigationBar": False,
         "showProgressBar": False,
