@@ -52,26 +52,29 @@ Shortcuts started from Universal Launcher are whitelisted automatically. Configu
 Set these per item in **Select Items to Show**, the same as without this theme:
 
 - **Name** — shown under the tile, e.g. `my switch 109`
-- **Icon** — use the file picker to choose from `myconsole/icons/`, e.g. `file:///sdcard/Download/myconsole/icons/switch.svg`
+- **Icon** — use the file picker to choose from `myconsole/icons/png/`, e.g. `file:///sdcard/Download/myconsole/icons/png/switch.png`
 
 The theme never rewrites names or icons; it only lays the tiles out and styles them.
 
-Bundled icons (`icons/`), all drawn to match:
+Bundled icons (`icons/png/`), all drawn to match:
 
 | File | Use for |
 |------|---------|
-| `router.svg` | Routers, gateways |
-| `switch.svg` | Network switches |
-| `firewall.svg` | Firewalls |
-| `wifi.svg` | Access points, Wi-Fi |
-| `nas.svg` | NAS, storage |
-| `server.svg` | Servers, hosts |
-| `streaming.svg` | Streaming, media |
-| `camera.svg` | Cameras, NVR |
-| `dashboard.svg` | Dashboards, admin UIs |
-| `default.svg` | Anything else |
+| `router.png` | Routers, gateways |
+| `switch.png` | Network switches |
+| `firewall.png` | Firewalls |
+| `wifi.png` | Access points, Wi-Fi |
+| `nas.png` | NAS, storage |
+| `server.png` | Servers, hosts |
+| `streaming.png` | Streaming, media |
+| `camera.png` | Cameras, NVR |
+| `dashboard.png` | Dashboards, admin UIs |
+| `default.png` | Anything else |
 
-Open `icons/gallery.html` in FKB or a browser to see them all with their paths. If an SVG will not load on your device, use `icons/png/<name>.png` instead.
+Use the PNGs, not the `.svg` files in `icons/` — FKB decodes shortcut icons into
+bitmaps and will not load an SVG. The SVGs are the editable sources.
+
+Open `icons/gallery.html` in FKB or a browser to see them all with their paths.
 
 ## Verify
 

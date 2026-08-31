@@ -130,9 +130,9 @@
 
   <footer>
     <p>
-      SVG keeps the crispest edges. If FKB will not take an SVG on your device,
-      use the matching PNG in <code>icons/png/</code>, for example
-      <code id="png-example">icons/png/switch.png</code>
+      These are the 256px PNGs. Fully Kiosk decodes a shortcut icon into a
+      bitmap instead of rendering it in the WebView, so it will not take the
+      <code>.svg</code> files — those are just the editable sources.
     </p>
     <p>
       Re-render the PNGs after editing an SVG with <code>tools/make-png.sh</code>.
@@ -160,11 +160,6 @@
       location.href.replace(/[?#].*$/, "").replace(/[^/]*$/, "")
     );
 
-    var pngExample = document.getElementById("png-example");
-    if (pngExample) {
-      pngExample.textContent = base + "png/switch.png";
-    }
-
     ICONS.forEach(function (entry) {
       var name = entry[0];
       var use = entry[1];
@@ -176,7 +171,7 @@
       disc.className = "disc";
 
       var img = document.createElement("img");
-      img.src = name + ".svg";
+      img.src = "png/" + name + ".png";
       img.alt = name;
       disc.appendChild(img);
 
@@ -186,7 +181,7 @@
 
       var file = document.createElement("div");
       file.className = "file";
-      file.textContent = base + name + ".svg";
+      file.textContent = base + "png/" + name + ".png";
 
       card.appendChild(disc);
       card.appendChild(label);

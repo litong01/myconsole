@@ -47,4 +47,4 @@ jobs:
 
             `/sdcard/Download/myconsole/fkb/myconsole-settings.json`
 
-            After that, add URLs in Universal Launcher → Select Items to Show as usual, using icons from `myconsole/icons/`.
+            After that, add URLs in Universal Launcher → Select Items to Show as usual, using icons from `myconsole/icons/png/` (FKB will not load the `.svg` sources).

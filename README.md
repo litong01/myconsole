@@ -85,40 +85,36 @@ For each item you set, exactly as you would without this theme:
 
 - **URL** — e.g. `http://192.168.1.109` or `http://plex.local:32400/web`
 - **Name** — e.g. `my switch 109`
-- **Icon** — one of the bundled icons below, e.g. `file:///sdcard/Download/myconsole/icons/switch.svg` (the icon field has a file picker, so you can browse to `myconsole/icons/` instead of typing)
+- **Icon** — one of the bundled PNGs below, e.g. `file:///sdcard/Download/myconsole/icons/png/switch.png` (the icon field has a file picker, so you can browse to `myconsole/icons/png/` instead of typing)
 
 The tile shows that name and that icon. New items appear automatically — no zip changes needed.
 
 ## The icon set
 
-`icons/` holds ten icons drawn on one grid with the same stroke weight and accent colour, so a wall of tiles looks like a single product rather than a pile of favicons. Pick one in an item's **Icon** field:
+Ten icons drawn on one grid with the same stroke weight and accent colour, so a wall of tiles looks like a single product rather than a pile of favicons.
 
-| Icon | Use for | Path |
-|------|---------|------|
-| `router` | Routers, gateways | `file:///sdcard/Download/myconsole/icons/router.svg` |
-| `switch` | Network switches | `file:///sdcard/Download/myconsole/icons/switch.svg` |
-| `firewall` | Firewalls | `file:///sdcard/Download/myconsole/icons/firewall.svg` |
-| `wifi` | Access points, Wi-Fi | `file:///sdcard/Download/myconsole/icons/wifi.svg` |
-| `nas` | NAS, storage | `file:///sdcard/Download/myconsole/icons/nas.svg` |
-| `server` | Servers, hosts | `file:///sdcard/Download/myconsole/icons/server.svg` |
-| `streaming` | Streaming, media | `file:///sdcard/Download/myconsole/icons/streaming.svg` |
-| `camera` | Cameras, NVR | `file:///sdcard/Download/myconsole/icons/camera.svg` |
-| `dashboard` | Dashboards, admin UIs | `file:///sdcard/Download/myconsole/icons/dashboard.svg` |
-| `default` | Anything else | `file:///sdcard/Download/myconsole/icons/default.svg` |
+**Use the PNGs in `icons/png/`.** FKB decodes a shortcut icon into a bitmap rather than rendering it in the WebView, so it will not accept the `.svg` files. The SVGs in `icons/` are the editable sources for the PNGs.
 
-Adjust the paths if you moved the folder out of Downloads. Your own PNG/ICO/SVG files work the same way, and the icon field has a file picker so you can browse instead of typing.
+| Use for | Icon path |
+|---------|-----------|
+| Routers, gateways | `file:///sdcard/Download/myconsole/icons/png/router.png` |
+| Network switches | `file:///sdcard/Download/myconsole/icons/png/switch.png` |
+| Firewalls | `file:///sdcard/Download/myconsole/icons/png/firewall.png` |
+| Access points, Wi-Fi | `file:///sdcard/Download/myconsole/icons/png/wifi.png` |
+| NAS, storage | `file:///sdcard/Download/myconsole/icons/png/nas.png` |
+| Servers, hosts | `file:///sdcard/Download/myconsole/icons/png/server.png` |
+| Streaming, media | `file:///sdcard/Download/myconsole/icons/png/streaming.png` |
+| Cameras, NVR | `file:///sdcard/Download/myconsole/icons/png/camera.png` |
+| Dashboards, admin UIs | `file:///sdcard/Download/myconsole/icons/png/dashboard.png` |
+| Anything else | `file:///sdcard/Download/myconsole/icons/png/default.png` |
 
-Reuse one icon as often as you like — `my switch 109`, `my switch 110`, and `my switch 111` can all point at `switch.svg`, and only the names differ on screen.
+Adjust the paths if you moved the folder out of Downloads. Your own PNG or ICO files work the same way, and the icon field has a file picker so you can browse instead of typing.
 
-**See them first:** open `icons/gallery.html` (on your computer or the tablet) for the whole set rendered in the same round tile as the console, each with its path.
+Reuse one icon as often as you like — `my switch 109`, `my switch 110`, and `my switch 111` can all point at `switch.png`, and only the names differ on screen.
 
-**PNG fallback:** if FKB will not accept an SVG on your device, use the matching 256px PNG:
+**See them first:** open `icons/gallery.html` (on your computer or the tablet) for the whole set rendered in the same round tile as the console, each with the exact path to paste.
 
-```
-file:///sdcard/Download/myconsole/icons/png/switch.png
-```
-
-After editing an SVG, re-render the PNGs with `tools/make-png.sh` (needs Chrome on your computer, not on the tablet).
+The PNGs are 256px with a transparent background. After editing an SVG, re-render them with `tools/make-png.sh` (needs Chrome on your computer, not on the tablet).
 
 ## Preview on desktop
 
