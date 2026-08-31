@@ -101,6 +101,28 @@
     text-align: center;
   }
 
+  /* Only the clock takes taps, so the header cannot swallow a tile press */
+  #myconsole-header .mc-clock {
+    pointer-events: auto;
+  }
+
+  /* Diagnostic panel, opened by tapping the clock five times */
+  #myconsole-report {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    overflow: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+    color: #8ab4f8;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
   #myconsole-header .mc-clock {
     font-size: clamp(2.4rem, 6vw, 3.4rem);
     font-weight: 300;
@@ -345,14 +367,65 @@
     return node;
   }
 
+  /**
+   * Tap the clock five times to list what each tile actually loaded. Needed
+   * because a stale looking icon can mean the file on disk is old, the WebView
+   * served a cached copy, or FKB handed over a bitmap of its own - and those
+   * look identical on screen but are fixed in different ways.
+   */
+  function showReport() {
+    var old = document.getElementById("myconsole-report");
+    if (old) {
+      old.parentNode.removeChild(old);
+      return;
+    }
+
+    var panel = el("div", "myconsole-report");
+    var lines = ["tap to close", ""];
+    var images = document.querySelectorAll("#myconsole-grid img");
+
+    for (var i = 0; i < images.length; i++) {
+      var img = images[i];
+      var loaded = img.complete && img.naturalWidth > 0;
+      lines.push(
+        (loaded ? "ok  " : "FAIL ") +
+        img.naturalWidth + "x" + img.naturalHeight + "  " +
+        (img.getAttribute("src") || "(no src)")
+      );
+    }
+
+    if (!images.length) lines.push("no icons found in the grid");
+
+    panel.textContent = lines.join("\n");
+    panel.onclick = function () {
+      panel.parentNode.removeChild(panel);
+    };
+    document.body.appendChild(panel);
+  }
+
+  function watchForReportTaps(clock) {
+    var taps = 0;
+    var timer = null;
+    clock.addEventListener("click", function () {
+      taps++;
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(function () { taps = 0; }, 2500);
+      if (taps >= 5) {
+        taps = 0;
+        showReport();
+      }
+    });
+  }
+
   function buildChrome() {
     var header = document.getElementById("myconsole-header");
     if (!header) {
       header = el("div", "myconsole-header");
-      header.setAttribute("aria-hidden", "true");
-      header.appendChild(el("div", null, "mc-clock")).textContent = "--:--";
+      var clock = header.appendChild(el("div", null, "mc-clock"));
+      clock.textContent = "--:--";
       header.appendChild(el("div", null, "mc-date"));
       document.body.appendChild(header);
+      watchForReportTaps(clock);
     }
 
     var stage = document.getElementById("myconsole-stage");

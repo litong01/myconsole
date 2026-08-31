@@ -171,7 +171,8 @@
       disc.className = "disc";
 
       var img = document.createElement("img");
-      img.src = "png/" + name + ".png";
+      // Query string defeats the WebView cache, so an edited icon shows up here
+      img.src = "png/" + name + ".png?v=" + Date.now();
       img.alt = name;
       disc.appendChild(img);
 
