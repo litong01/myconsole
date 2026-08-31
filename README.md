@@ -114,7 +114,15 @@ Reuse one icon as often as you like — `my switch 109`, `my switch 110`, and `m
 
 **See them first:** open `icons/gallery.html` (on your computer or the tablet) for the whole set rendered in the same round tile as the console, each with the exact path to paste.
 
-The PNGs are 256px with a transparent background. After editing an SVG, re-render them with `tools/make-png.sh` (needs Chrome on your computer, not on the tablet).
+Every symbol is scaled to the same visual size and centered on the same grid, so
+a monitor and a flat switch take up equal room side by side and no single tile
+looks oversized in a row — only the drawing inside each circle differs.
+
+The PNGs are 256px with a transparent background. After editing an SVG, run
+`tools/normalize-icons.py` to bring it back in line with the rest, then
+`tools/make-png.sh` to re-render (both need Chrome on your computer, not on the
+tablet). `tools/icon-bounds.py` reports what each icon currently measures, and
+`tools/icon-sheet.py` renders the whole set in tiles for comparison.
 
 ## Preview on desktop
 
@@ -133,7 +141,11 @@ myconsole/
   preview/index.html            ← desktop preview of the console
   fkb/recommended-settings.md
   tools/make-png.sh             ← re-render PNGs after editing an SVG
+  tools/normalize-icons.py      ← match icon sizes after editing an SVG
+  tools/icon-bounds.py          ← report what each icon measures
+  tools/icon-sheet.py           ← render the set side by side
   tools/make-settings.py        ← rebuild the importable settings file
+  tools/make-preview.py         ← rebuild the desktop preview
   tools/package.sh              ← build the tablet zip
 ```
 

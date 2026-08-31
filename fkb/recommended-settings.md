@@ -66,7 +66,9 @@ Set these per item in **Select Items to Show**, the same as without this theme:
 
 The theme never rewrites names or icons; it only lays the tiles out and styles them.
 
-Bundled icons (`icons/png/`), all drawn to match:
+Bundled icons (`icons/png/`), all drawn to match. Each symbol is scaled to the
+same visual size and centered on the same grid, so a monitor and a switch take up
+equal room in a row; only the drawing inside differs:
 
 | File | Use for |
 |------|---------|
