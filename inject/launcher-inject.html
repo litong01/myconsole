@@ -28,6 +28,9 @@
     --mc-tile: 132px;
     --mc-gap: 28px;
     --mc-cols: 3;
+    /* Space under the circle, and how far the icon art is inset inside it */
+    --mc-label-gap: 4px;
+    --mc-icon-inset: 18px;
     --mc-font: "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
   }
 
@@ -154,7 +157,7 @@
     justify-content: center;
     width: var(--mc-tile) !important;
     height: var(--mc-tile) !important;
-    padding: 26px !important;
+    padding: var(--mc-icon-inset) !important;
     box-sizing: border-box !important;
     border-radius: 50% !important;
     background:
@@ -198,7 +201,7 @@
   .mc-label {
     display: block !important;
     max-width: calc(var(--mc-tile) + 36px) !important;
-    margin: 14px auto 0 !important;
+    margin: var(--mc-label-gap) auto 0 !important;
     padding: 0 4px !important;
     font-family: var(--mc-font) !important;
     font-size: 0.92rem !important;
@@ -213,10 +216,12 @@
     background: transparent !important;
   }
 
+  /* Inset scales with the tile so the artwork keeps the same proportions */
   @media (orientation: portrait) {
     :root {
       --mc-tile: 118px;
       --mc-gap: 22px;
+      --mc-icon-inset: 16px;
     }
   }
 
@@ -224,6 +229,7 @@
     :root {
       --mc-tile: 104px;
       --mc-gap: 18px;
+      --mc-icon-inset: 14px;
     }
   }
 </style>
