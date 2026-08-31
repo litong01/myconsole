@@ -52,7 +52,7 @@ Shortcuts started from Universal Launcher are whitelisted automatically. Configu
 Set these per item in **Select Items to Show**, the same as without this theme:
 
 - **Name** — shown under the tile, e.g. `my switch 109`
-- **Icon** — use the file picker to choose from `myconsole/icons/`, e.g. `file:///storage/emulated/0/Download/myconsole/icons/switch.svg`
+- **Icon** — use the file picker to choose from `myconsole/icons/`, e.g. `file:///sdcard/Download/myconsole/icons/switch.svg`
 
 The theme never rewrites names or icons; it only lays the tiles out and styles them.
 

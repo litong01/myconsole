@@ -29,13 +29,14 @@ https://github.com/litong01/myconsole/releases/latest
 Every path in this README then starts with:
 
 ```
-/storage/emulated/0/Download/myconsole/
+/sdcard/Download/myconsole/
 ```
 
-That is what Android's Downloads folder really is. File managers display it as
-**Downloads**, the directory name on disk is `Download` (no `s`), and
-`/sdcard/Download/myconsole/` is the same place by an older alias if FKB's picker
-shows it that way. If you moved the folder elsewhere, substitute your path.
+`/sdcard` is Android's shorthand for internal storage, and it is the form Fully
+Kiosk's own docs use for `file://` paths. File managers show the folder as
+**Downloads** while the directory on disk is `Download`, no `s`. If a picker
+prints the longer `/storage/emulated/0/Download/myconsole/`, that is the same
+place. If you moved the folder, substitute your path.
 
 ### 2. Install the theme by importing a settings file
 
@@ -45,7 +46,7 @@ inject code by hand on the tablet. Import it instead:
 **FKB → Settings → Other Settings → Import Settings** → pick
 
 ```
-/storage/emulated/0/Download/myconsole/fkb/myconsole-settings.json
+/sdcard/Download/myconsole/fkb/myconsole-settings.json
 ```
 
 Only the keys in that file are applied, so your existing shortcuts, PIN, and
@@ -84,7 +85,7 @@ For each item you set, exactly as you would without this theme:
 
 - **URL** — e.g. `http://192.168.1.109` or `http://plex.local:32400/web`
 - **Name** — e.g. `my switch 109`
-- **Icon** — one of the bundled icons below, e.g. `file:///storage/emulated/0/Download/myconsole/icons/switch.svg` (the icon field has a file picker, so you can browse to `myconsole/icons/` instead of typing)
+- **Icon** — one of the bundled icons below, e.g. `file:///sdcard/Download/myconsole/icons/switch.svg` (the icon field has a file picker, so you can browse to `myconsole/icons/` instead of typing)
 
 The tile shows that name and that icon. New items appear automatically — no zip changes needed.
 
@@ -94,16 +95,16 @@ The tile shows that name and that icon. New items appear automatically — no zi
 
 | Icon | Use for | Path |
 |------|---------|------|
-| `router` | Routers, gateways | `file:///storage/emulated/0/Download/myconsole/icons/router.svg` |
-| `switch` | Network switches | `file:///storage/emulated/0/Download/myconsole/icons/switch.svg` |
-| `firewall` | Firewalls | `file:///storage/emulated/0/Download/myconsole/icons/firewall.svg` |
-| `wifi` | Access points, Wi-Fi | `file:///storage/emulated/0/Download/myconsole/icons/wifi.svg` |
-| `nas` | NAS, storage | `file:///storage/emulated/0/Download/myconsole/icons/nas.svg` |
-| `server` | Servers, hosts | `file:///storage/emulated/0/Download/myconsole/icons/server.svg` |
-| `streaming` | Streaming, media | `file:///storage/emulated/0/Download/myconsole/icons/streaming.svg` |
-| `camera` | Cameras, NVR | `file:///storage/emulated/0/Download/myconsole/icons/camera.svg` |
-| `dashboard` | Dashboards, admin UIs | `file:///storage/emulated/0/Download/myconsole/icons/dashboard.svg` |
-| `default` | Anything else | `file:///storage/emulated/0/Download/myconsole/icons/default.svg` |
+| `router` | Routers, gateways | `file:///sdcard/Download/myconsole/icons/router.svg` |
+| `switch` | Network switches | `file:///sdcard/Download/myconsole/icons/switch.svg` |
+| `firewall` | Firewalls | `file:///sdcard/Download/myconsole/icons/firewall.svg` |
+| `wifi` | Access points, Wi-Fi | `file:///sdcard/Download/myconsole/icons/wifi.svg` |
+| `nas` | NAS, storage | `file:///sdcard/Download/myconsole/icons/nas.svg` |
+| `server` | Servers, hosts | `file:///sdcard/Download/myconsole/icons/server.svg` |
+| `streaming` | Streaming, media | `file:///sdcard/Download/myconsole/icons/streaming.svg` |
+| `camera` | Cameras, NVR | `file:///sdcard/Download/myconsole/icons/camera.svg` |
+| `dashboard` | Dashboards, admin UIs | `file:///sdcard/Download/myconsole/icons/dashboard.svg` |
+| `default` | Anything else | `file:///sdcard/Download/myconsole/icons/default.svg` |
 
 Adjust the paths if you moved the folder out of Downloads. Your own PNG/ICO/SVG files work the same way, and the icon field has a file picker so you can browse instead of typing.
 
@@ -114,7 +115,7 @@ Reuse one icon as often as you like — `my switch 109`, `my switch 110`, and `m
 **PNG fallback:** if FKB will not accept an SVG on your device, use the matching 256px PNG:
 
 ```
-file:///storage/emulated/0/Download/myconsole/icons/png/switch.png
+file:///sdcard/Download/myconsole/icons/png/switch.png
 ```
 
 After editing an SVG, re-render the PNGs with `tools/make-png.sh` (needs Chrome on your computer, not on the tablet).

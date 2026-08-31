@@ -39,12 +39,12 @@ jobs:
           body: |
             Download **myconsole.zip** on the tablet and unzip it where it lands, in the Downloads folder:
 
-            `/storage/emulated/0/Download/myconsole/`
+            `/sdcard/Download/myconsole/`
 
             That folder should contain `inject/`, `icons/`, `fkb/`, and `README.md`.
 
             Then install the theme with Fully Kiosk → Settings → Other Settings → **Import Settings**, picking:
 
-            `/storage/emulated/0/Download/myconsole/fkb/myconsole-settings.json`
+            `/sdcard/Download/myconsole/fkb/myconsole-settings.json`
 
             After that, add URLs in Universal Launcher → Select Items to Show as usual, using icons from `myconsole/icons/`.
