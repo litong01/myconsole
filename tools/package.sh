@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build myconsole.zip for the tablet: unzip to /sdcard/myconsole/
+# Build myconsole.zip for the tablet: unzip in the Android Download folder.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

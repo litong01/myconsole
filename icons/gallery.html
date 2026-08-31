@@ -121,7 +121,8 @@
     <p>
       Paste one of these paths into an item's <strong>Icon</strong> field in
       Fully Kiosk → Universal Launcher → Select Items to Show.
-      Paths assume you unzipped to <code>/sdcard/myconsole/</code>.
+      The paths below are read from wherever this page is open, so they match
+      your actual folder.
     </p>
   </header>
 
@@ -130,8 +131,8 @@
   <footer>
     <p>
       SVG keeps the crispest edges. If FKB will not take an SVG on your device,
-      use the matching PNG in <code>icons/png/</code>:
-      <code>file:///sdcard/myconsole/icons/png/switch.png</code>
+      use the matching PNG in <code>icons/png/</code>, for example
+      <code id="png-example">icons/png/switch.png</code>
     </p>
     <p>
       Re-render the PNGs after editing an SVG with <code>tools/make-png.sh</code>.
@@ -154,6 +155,16 @@
 
     var grid = document.getElementById("grid");
 
+    /** Folder this page sits in, so shown paths match the real location */
+    var base = decodeURIComponent(
+      location.href.replace(/[?#].*$/, "").replace(/[^/]*$/, "")
+    );
+
+    var pngExample = document.getElementById("png-example");
+    if (pngExample) {
+      pngExample.textContent = base + "png/switch.png";
+    }
+
     ICONS.forEach(function (entry) {
       var name = entry[0];
       var use = entry[1];
@@ -175,7 +186,7 @@
 
       var file = document.createElement("div");
       file.className = "file";
-      file.textContent = "file:///sdcard/myconsole/icons/" + name + ".svg";
+      file.textContent = base + name + ".svg";
 
       card.appendChild(disc);
       card.appendChild(label);
