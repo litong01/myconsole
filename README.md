@@ -91,7 +91,7 @@ The tile shows that name and that icon. New items appear automatically — no zi
 
 ## The icon set
 
-Ten icons drawn on one grid with the same stroke weight and accent colour, so a wall of tiles looks like a single product rather than a pile of favicons.
+Icons drawn on one grid with the same stroke weight and accent colour, so a wall of tiles looks like a single product rather than a pile of favicons.
 
 **Use the PNGs in `icons/png/`.** FKB decodes a shortcut icon into a bitmap rather than rendering it in the WebView, so it will not accept the `.svg` files. The SVGs in `icons/` are the editable sources for the PNGs.
 
@@ -99,6 +99,7 @@ Ten icons drawn on one grid with the same stroke weight and accent colour, so a 
 |---------|-----------|
 | Routers, gateways | `file:///sdcard/Download/myconsole/icons/png/router.png` |
 | Network switches | `file:///sdcard/Download/myconsole/icons/png/switch.png` |
+| Power switches | `file:///sdcard/Download/myconsole/icons/png/power.png` |
 | Firewalls | `file:///sdcard/Download/myconsole/icons/png/firewall.png` |
 | Access points, Wi-Fi | `file:///sdcard/Download/myconsole/icons/png/wifi.png` |
 | NAS, storage | `file:///sdcard/Download/myconsole/icons/png/nas.png` |

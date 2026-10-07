@@ -74,6 +74,7 @@ equal room in a row; only the drawing inside differs:
 |------|---------|
 | `router.png` | Routers, gateways |
 | `switch.png` | Network switches |
+| `power.png` | Power switches |
 | `firewall.png` | Firewalls |
 | `wifi.png` | Access points, Wi-Fi |
 | `nas.png` | NAS, storage |
